@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CreatUser</string>
+    <string name="name">Name</string>
+    <string name="family">Family</string>
+    <string name="natoinal_number">Natoinal Code</string>
+    <string name="sport">Sport</string>
+    <string name="painting">Painting</string>
+    <string name="singing">Singing</string>
+    <string name="creat">Creat</string>
+</resources>
