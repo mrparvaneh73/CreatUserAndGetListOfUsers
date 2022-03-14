@@ -7,21 +7,27 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.creatuser.R
+import com.example.creatuser.data.local.model.User
+import com.example.creatuser.data.remote.model.CreateUser
 import com.example.creatuser.databinding.FragmentAcountBinding
-import com.example.creatuser.model.User
+import com.example.creatuser.di.App
+import com.example.creatuser.ui.users.UserFragmentFactory
+import com.example.creatuser.ui.users.UsersFragmentViewModel
 
 class AccountFragment:Fragment(R.layout.fragment_acount) {
-    val viewModelHome by viewModels<AccountFragmentViewModel>()
+    private val viewModelHome by viewModels<AccountFragmentViewModel>(factoryProducer = {
+        AccountFragmentFactory((requireActivity().application as App).serviceLocator.repository)
+    })
+
     var hobbies:MutableList<String> = mutableListOf()
     lateinit var binding:FragmentAcountBinding
     val navController by lazy {
         findNavController()
     }
-
+private lateinit var user: CreateUser
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding= FragmentAcountBinding.bind(view)
              createuser()
-            gotouploadphoto()
     }
 
 
@@ -37,21 +43,19 @@ class AccountFragment:Fragment(R.layout.fragment_acount) {
         }
         with(binding) {
             btcr.setOnClickListener {
-                val user = User(
+                user = CreateUser(
                     etname.text.toString(),
-                    listOf("Movie", "Sport"),
                     etfamily.text.toString(),
                     etnacode.text.toString()
                 )
                 viewModelHome.createUser(user)
+                viewModelHome.createUser(user).observe(viewLifecycleOwner, Observer {
+                    navController.navigate(AccountFragmentDirections.actionAccountFragmentToUploadImageFragment(it))
+                })
 
             }
         }
     }
-    fun gotouploadphoto(){
-        viewModelHome.userId.observe(viewLifecycleOwner, Observer {
-            navController.navigate(AccountFragmentDirections.actionAccountFragmentToUploadImageFragment(it))
-        })
-    }
+
 
 }

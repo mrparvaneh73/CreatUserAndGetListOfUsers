@@ -1,4 +1,4 @@
-package com.example.creatuser.data.network
+package com.example.creatuser.data.remote.network
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -34,5 +34,5 @@ object NetworkManager {
         .client(client)
         .build()
 
-    val service = retrofit.create(Service::class.java)
+    val service = retrofit.create(UserApi::class.java)
 }

@@ -1,54 +1,33 @@
 package com.example.creatuser.ui.users
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.creatuser.data.network.NetworkManager
-import com.example.creatuser.model.UserFromServer
+import com.example.creatuser.data.Repository
+import com.example.creatuser.data.local.model.User
+import com.example.creatuser.data.remote.model.UserResponse
+import com.example.creatuser.data.remote.network.NetworkManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.UnknownServiceException
 
-class UsersFragmentViewModel:ViewModel() {
-    var _listUsers = MutableLiveData<List<UserFromServer>>()
+class UsersFragmentViewModel(private val repository: Repository): ViewModel() {
 
-    private val _searchResult = MutableLiveData<List<UserFromServer>>()
-    val searchResult: LiveData<List<UserFromServer>> = _searchResult
 
-    fun getUsersFromServer(){
-        NetworkManager.service.getUser().enqueue(object : Callback<List<UserFromServer>>{
-            override fun onResponse(
-                call: Call<List<UserFromServer>>,
-                response: Response<List<UserFromServer>>
-            ) {
-                _listUsers.postValue(response.body())
-            }
 
-            override fun onFailure(call: Call<List<UserFromServer>>, t: Throwable) {
 
-            }
-        })
-    }
-    fun searchFromUsers(query:HashMap<String,String>){
-        NetworkManager.service.getUser(query).enqueue(object : Callback<List<UserFromServer>?> {
-            override fun onResponse(
-                call: Call<List<UserFromServer>?>,
-                response: Response<List<UserFromServer>?>
-            ) {
-                _searchResult.postValue(response.body())
-            }
 
-            override fun onFailure(call: Call<List<UserFromServer>?>, t: Throwable) {
+    fun getUsersFromServer():LiveData<List<User>>{
 
-            }
-        })
+        return repository.getUserList()
 
     }
-    fun getUserFromFirstName(firstname:String){
-        if (firstname.isNotBlank()){
-            searchFromUsers( hashMapOf("firstName" to firstname))
-        }
-
-
+    fun searchFromUsers(firstname: String):LiveData<List<User>>{
+            return repository.searchuser(hashMapOf("firstName" to firstname))
     }
+
 }

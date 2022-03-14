@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.creatuser.data.local.model.User
 import com.example.creatuser.databinding.ListItemBinding
-import com.example.creatuser.model.UserFromServer
 
-class RecyclerAdaptor(val items: List<UserFromServer>) :
-    RecyclerView.Adapter<RecyclerAdaptor.MyViewHolder>() {
+class RecyclerAdaptor(val items: List<User>) : RecyclerView.Adapter<RecyclerAdaptor.MyViewHolder>() {
 
 
     lateinit var itemClick: ItemClick
