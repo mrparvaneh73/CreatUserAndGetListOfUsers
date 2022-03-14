@@ -30,4 +30,5 @@ class ShowInfoFragment:Fragment(R.layout.fragment_showinfo) {
         })
 
     }
+
 }
